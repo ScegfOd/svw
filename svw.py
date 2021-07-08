@@ -19,11 +19,11 @@ def get_steps(feature_file):
 		with open(feature_file, 'r') as ff:
 			#first clean out comments
 			steps = list()
+			prev_match = 'given'
 			for line in ff:
 				line = line.strip()
 				if len(line) == 0 or line[0] == '#' or line[0] == '@':
 					continue # skip comments, tags, and whitespace
-				prev_match = 'given'
 				if re.match('^[Gg]iven', line):
 					prev_match = 'given'
 				elif re.match('^[Tt]hen', line):
@@ -53,7 +53,7 @@ if not pathlib.Path(env_file).is_file():
 
 # before_all, as you might expect, runs before all of our Cucumber features
 def before_all(context):
-	context.driver = webdriver.FireFox() # the one true browser
+	context.driver = webdriver.Firefox() # the one true browser
     #context.my_pom_abbreviation = pom_name_here(context.driver)
 
 def before_step(context, step):
@@ -140,14 +140,14 @@ for feature_file in file_list:
 			description = ""
 			if re.match('^given',step):
 				description = step[5:].strip()
-				this_file.write(f"\n@given('{description}')")
+				this_file.write(f'\n@given("{description}")')
 			elif re.match('^then',step):
 				description = step[4:].strip()
-				this_file.write(f"\n@then('{description}')")
+				this_file.write(f'\n@then("{description}")')
 			else: #when
 				description = step[4:].strip()
-				this_file.write(f"\n@when('{description}')")
-			description = re.sub(' ', '_', description).lower()
+				this_file.write(f'\n@when("{description}")')
+			description = re.sub('[^\w]', '_', description).lower()
 			this_file.write(f"\ndef step_{description}(context):")
 			this_file.write(f"\n\tpass\n\n")
 		else: #TODO any keywords I don't know....
