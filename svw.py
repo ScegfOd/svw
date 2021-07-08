@@ -11,12 +11,14 @@ import re
 import sys
 import os
 
+
+
+added_steps = set() # outside to prevent duplicate steps from different files
 def get_steps(feature_file):
 	if pathlib.Path(feature_file).is_file():
 		with ff as open(feature_file, 'r'):
 			#first clean out comments
 			steps = list()
-			added_steps = set()
 			for line in ff:
 				line = line.strip()
 				if len(line) == 0 or line[0] == '#' or line[0] == '@':
@@ -39,6 +41,8 @@ def get_steps(feature_file):
 
 # generate steps folder if it isn't there
 os.makedirs(os.path.dirname('./steps/'), exist_ok=True)
+
+
 
 # make a stup environment file if it isn't there
 env_file = './environment.py'
@@ -79,9 +83,11 @@ def after_step(context, step):
 def after_all(context):
     context.driver.quit()""")
 
+
+
 # if args given, they're the feature files to get
+file_list = []
 if len(sys.argv) > 1:
-	file_list = []
 	for arg in sys.argv[1:]:
 		if arg.find('.feature') != -1: # tab complete or else
 			file_list.append(arg)
@@ -90,12 +96,14 @@ else:
 	this_dir = pathlib.Path().resolve()
 	file_list = this_dir.glob("*.feature")
 
+
+
 for feature_file in file_list:
 	steps = get_steps(feature_file)
 	if not steps:
 		continue
 
-	#then turn them into steps
+	# then turn them into steps
 	scenario_count = 0
 	this_file = open(feature_file) # so we don't have to check before closing
 	for step in steps:
