@@ -16,6 +16,7 @@ def get_steps(feature_file):
 		with ff as open(feature_file, 'r'):
 			#first clean out comments
 			steps = list()
+			added_steps = set()
 			for line in ff:
 				line = line.strip()
 				if len(line) == 0 or line[0] == '#' or line[0] == '@':
@@ -29,7 +30,9 @@ def get_steps(feature_file):
 					prev_match = 'when'
 				line = line[0].lower() + line[1:]
 				line = re.sub('^([Bb]ut|[Aa]nd|\*)', prev_match, line)
-				steps.append(line)
+				if line not in added_steps:
+					added_steps.add(line)
+					steps.append(line)
 			return steps
 	print(f"Error: couldn't read {feature_file}!\n")
 	return None
