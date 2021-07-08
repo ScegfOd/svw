@@ -16,7 +16,7 @@ import os
 added_steps = set() # outside to prevent duplicate steps from different files
 def get_steps(feature_file):
 	if pathlib.Path(feature_file).is_file():
-		with ff as open(feature_file, 'r'):
+		with open(feature_file, 'r') as ff:
 			#first clean out comments
 			steps = list()
 			for line in ff:
@@ -47,7 +47,7 @@ os.makedirs(os.path.dirname('./steps/'), exist_ok=True)
 # make a stup environment file if it isn't there
 env_file = './environment.py'
 if not pathlib.Path(env_file).is_file():
-	with env_stub as open(env_file, 'r'):
+	with open(env_file, 'w') as env_stub:
 		env_stub.write("""from selenium import webdriver
 #from path_to_poms import pom_name_here
 
