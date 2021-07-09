@@ -51,37 +51,37 @@ if not pathlib.Path(env_file).is_file():
 		env_stub.write("""from selenium import webdriver
 #from path_to_poms import pom_name_here
 
-# before_all, as you might expect, runs before all of our Cucumber features
 def before_all(context):
 	context.driver = webdriver.Firefox() # the one true browser
-    #context.my_pom_abbreviation = pom_name_here(context.driver)
+	#context.my_pom_abbreviation = pom_name_here(context.driver)
 
 def before_step(context, step):
-    pass
+	pass
 
 def before_scenario(context, scenario):
-    pass
+	pass
 
 def before_feature(context, feature):
-    pass
+	pass
 
 def before_tag(context, tag):
-    pass
+	pass
 
 def after_tag(context, tag):
-    pass
+	pass
 
 def after_feature(context, feature):
-    pass
+	pass
 
 def after_scenario(context, scenario):
-    pass
+	pass
 
 def after_step(context, step):
-    pass
+	pass
 
 def after_all(context):
-    context.driver.quit()""")
+	context.driver.quit()
+""")
 
 
 
@@ -149,7 +149,7 @@ for feature_file in file_list:
 				this_file.write(f'\n@when("{description}")')
 			description = re.sub('[^\w]', '_', description).lower()
 			this_file.write(f"\ndef step_{description}(context):")
-			this_file.write(f"\n\tpass\n\n")
+			this_file.write(f"\n\tassert true is false # unimplemented tests fail\n\n")
 		else: #TODO any keywords I don't know....
 			print()
 			print("I don't know how to handle")
